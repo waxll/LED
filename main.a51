@@ -1,0 +1,49 @@
+KEY0 EQU P2.0
+KEY1 EQU P2.1
+ORG 000H
+AJMP MAIN
+ORG 000BH
+AJMP TIMERO
+
+MAIN:
+    MOV 30H,#0FFH
+    MOV TMOD,#01H
+    MOV TH0,#03CH
+    MOV TL0,#0B0H 
+    MOV IE,#82H
+    SETB TR0
+LOOP:
+    CLR P1.0
+    ACALL DLAY
+    SETB P1.0
+    SJMP LOOP
+TIMERO:
+    MOV TH0,#03CH
+    MOV TL0,#0B0H
+    JNB KEY0,K0 
+    JNB KEY1,K1 
+    SJMP OUT
+K0:
+    INC 30H
+    MOV A,30H
+    CJNE A,#0FFH,OUT
+    MOV 30H,#0FFH
+    AJMP OUT
+K1:
+    DEC 30H
+    MOV A,30H
+    CJNE A,#0,OUT
+    MOV 30H,#0
+OUT:
+    RETI
+DLAY:
+    D1:
+        MOV R7,30H
+		D2:
+        MOV R6,#0FFH
+		MOV R5,#0FFH
+		DJNZ R5,$
+        DJNZ R6,D2
+        DJNZ R7,D1
+        RET
+END

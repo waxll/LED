@@ -1,0 +1,91 @@
+A51 MACRO ASSEMBLER  MAIN                                                                 07/17/2020 13:51:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\main.obj
+ASSEMBLER INVOKED BY: D:\Keil C51\C51\BIN\A51.EXE main.a51 SET(SMALL) DEBUG PRINT(.\Listings\main.lst) OBJECT(.\Objects\
+                      main.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00A0                 1     KEY0 EQU P2.0
+  00A1                 2     KEY1 EQU P2.1
+0000                   3     ORG 000H
+0000 010D              4     AJMP MAIN
+000B                   5     ORG 000BH
+000B 0126              6     AJMP TIMERO
+                       7     
+000D                   8     MAIN:
+000D 7530FF            9         MOV 30H,#0FFH
+0010 758901           10         MOV TMOD,#01H
+0013 758C3C           11         MOV TH0,#03CH
+0016 758AB0           12         MOV TL0,#0B0H 
+0019 75A882           13         MOV IE,#82H
+001C D28C             14         SETB TR0
+001E                  15     LOOP:
+001E C290             16         CLR P1.0
+0020 114B             17         ACALL DLAY
+0022 D290             18         SETB P1.0
+0024 80F8             19         SJMP LOOP
+0026                  20     TIMERO:
+0026 758C3C           21         MOV TH0,#03CH
+0029 758AB0           22         MOV TL0,#0B0H
+002C 30A005           23         JNB KEY0,K0 
+002F 30A10E           24         JNB KEY1,K1 
+0032 8016             25         SJMP OUT
+0034                  26     K0:
+0034 0530             27         INC 30H
+0036 E530             28         MOV A,30H
+0038 B4FF0F           29         CJNE A,#0FFH,OUT
+003B 7530FF           30         MOV 30H,#0FFH
+003E 014A             31         AJMP OUT
+0040                  32     K1:
+0040 1530             33         DEC 30H
+0042 E530             34         MOV A,30H
+0044 B40003           35         CJNE A,#0,OUT
+0047 753000           36         MOV 30H,#0
+004A                  37     OUT:
+004A 32               38         RETI
+004B                  39     DLAY:
+004B                  40         D1:
+004B AF30             41             MOV R7,30H
+004D                  42                     D2:
+004D 7EFF             43             MOV R6,#0FFH
+004F 7DFF             44                     MOV R5,#0FFH
+0051 DDFE             45                     DJNZ R5,$
+0053 DEF8             46             DJNZ R6,D2
+0055 DFF4             47             DJNZ R7,D1
+0057 22               48             RET
+                      49     END
+A51 MACRO ASSEMBLER  MAIN                                                                 07/17/2020 13:51:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+D1 . . . . . . . .  C ADDR   004BH   A   
+D2 . . . . . . . .  C ADDR   004DH   A   
+DLAY . . . . . . .  C ADDR   004BH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+K0 . . . . . . . .  C ADDR   0034H   A   
+K1 . . . . . . . .  C ADDR   0040H   A   
+KEY0 . . . . . . .  B ADDR   00A0H.0 A   
+KEY1 . . . . . . .  B ADDR   00A0H.1 A   
+LOOP . . . . . . .  C ADDR   001EH   A   
+MAIN . . . . . . .  C ADDR   000DH   A   
+OUT. . . . . . . .  C ADDR   004AH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TIMERO . . . . . .  C ADDR   0026H   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
